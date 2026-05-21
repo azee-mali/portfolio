@@ -1560,6 +1560,46 @@ section {
   font-size: 0.9rem;
 }
 
+.form-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  background: #ff335515;
+  border: 1px solid #ff3355;
+  border-radius: 4px;
+}
+
+.form-error[hidden] {
+  display: none !important;
+}
+
+.form-error-icon {
+  font-size: 1.25rem;
+  color: #ff3355;
+  font-weight: bold;
+}
+
+.form-error strong {
+  display: block;
+  font-family: var(--font-display);
+  color: #ff6b8a;
+  margin-bottom: 0.25rem;
+}
+
+.form-error p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.form-fallback-btn {
+  display: inline-block;
+  font-size: 0.8rem;
+  padding: 0.6rem 1rem;
+}
+
 .contact-link {
   display: flex;
   flex-direction: column;

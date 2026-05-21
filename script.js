@@ -236,28 +236,143 @@
   sections.forEach((s) => observer.observe(s));
 })();
 
-/* Contact form → email via FormSubmit */
+/* Contact form → Web3Forms (sends to mazeemali150@gmail.com) */
 (function initContactForm() {
   const form = document.getElementById("contact-form");
-  const nextInput = document.getElementById("form-next-url");
   const successBanner = document.getElementById("form-success");
-  if (!form || !nextInput) return;
+  const errorBanner = document.getElementById("form-error");
+  const errorText = document.getElementById("form-error-text");
+  const mailtoFallback = document.getElementById("form-mailto-fallback");
+  const config = window.CONTACT_CONFIG || { recipientEmail: "mazeemali150@gmail.com" };
 
-  const base = window.location.href.split(/[?#]/)[0];
-  nextInput.value = base + "#contact?sent=success";
+  if (!form) return;
 
-  if (new URLSearchParams(window.location.search).get("sent") === "success") {
-    if (successBanner) successBanner.hidden = false;
-    history.replaceState(null, "", base + "#contact");
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  const btn = form.querySelector(".btn-submit");
+  const btnText = form.querySelector(".btn-submit-text");
+  const btnLoading = form.querySelector(".btn-submit-loading");
+
+  function setLoading(on) {
+    if (btn) btn.disabled = on;
+    if (btnText) btnText.hidden = on;
+    if (btnLoading) btnLoading.hidden = !on;
   }
 
-  form.addEventListener("submit", () => {
-    const btn = form.querySelector(".btn-submit");
-    const text = form.querySelector(".btn-submit-text");
-    const loading = form.querySelector(".btn-submit-loading");
-    if (btn) btn.disabled = true;
-    if (text) text.hidden = true;
-    if (loading) loading.hidden = false;
+  function hideBanners() {
+    if (successBanner) successBanner.hidden = true;
+    if (errorBanner) errorBanner.hidden = true;
+  }
+
+  function showSuccess() {
+    hideBanners();
+    if (successBanner) successBanner.hidden = false;
+    form.reset();
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function buildMailtoLink(name, email, objective) {
+    const subject = encodeURIComponent("Portfolio contact from " + name);
+    const body = encodeURIComponent(
+      "Name: " + name + "\nEmail: " + email + "\n\nObjective:\n" + objective
+    );
+    return "mailto:" + config.recipientEmail + "?subject=" + subject + "&body=" + body;
+  }
+
+  function showError(message, name, email, objective) {
+    hideBanners();
+    if (errorBanner) errorBanner.hidden = false;
+    if (errorText) errorText.textContent = message;
+    if (mailtoFallback && name) {
+      mailtoFallback.href = buildMailtoLink(name, email, objective);
+    }
+  }
+
+  if (new URLSearchParams(window.location.search).get("sent") === "success") {
+    showSuccess();
+    history.replaceState(null, "", window.location.pathname + "#contact");
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideBanners();
+
+    if (form.querySelector('[name="botcheck"]')?.value) return;
+
+    const name = form.querySelector("#client-name")?.value.trim();
+    const email = form.querySelector("#client-email")?.value.trim();
+    const objective = form.querySelector("#client-objective")?.value.trim();
+
+    if (!name || !email || !objective) return;
+
+    const accessKey = config.web3formsAccessKey;
+    const hasWeb3Key = accessKey && accessKey !== "PASTE_YOUR_ACCESS_KEY_HERE";
+
+    setLoading(true);
+
+    try {
+      if (!hasWeb3Key) {
+        const fd = new FormData();
+        fd.append("name", name);
+        fd.append("email", email);
+        fd.append("objective", objective);
+        fd.append("message", objective);
+        fd.append("_subject", "Portfolio contact from " + name);
+        fd.append("_replyto", email);
+        fd.append("_template", "table");
+        fd.append("_captcha", "false");
+
+        const fsRes = await fetch(
+          "https://formsubmit.co/ajax/" + encodeURIComponent(config.recipientEmail),
+          { method: "POST", body: fd, headers: { Accept: "application/json" } }
+        );
+        const fsData = await fsRes.json();
+
+        if (fsData.success === "true" || fsData.success === true) {
+          showSuccess();
+          return;
+        }
+
+        showError(
+          "Email form needs one-time setup. Owner: get a free key at web3forms.com (2 min) or activate FormSubmit in your inbox. Use the button below meanwhile.",
+          name,
+          email,
+          objective
+        );
+        return;
+      }
+
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: "Portfolio contact from " + name,
+          from_name: name,
+          email: email,
+          replyto: email,
+          message:
+            "New portfolio message\n\n" +
+            "Name: " + name + "\n" +
+            "Email: " + email + "\n\n" +
+            "Objective:\n" + objective,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showSuccess();
+      } else {
+        showError(
+          data.message || "Something went wrong. Try the email button below.",
+          name,
+          email,
+          objective
+        );
+      }
+    } catch {
+      showError("Network error. Use the button below to email directly.", name, email, objective);
+    } finally {
+      setLoading(false);
+    }
   });
 })();

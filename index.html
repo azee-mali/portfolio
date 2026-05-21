@@ -505,7 +505,16 @@
         <span class="form-success-icon">✓</span>
         <div>
           <strong>Message sent!</strong>
-          <p>Thanks for reaching out — I'll get back to you soon.</p>
+          <p>Thanks for reaching out — your message was sent to mazeemali150@gmail.com. I'll reply soon.</p>
+        </div>
+      </div>
+
+      <div id="form-error" class="form-error" hidden>
+        <span class="form-error-icon">!</span>
+        <div>
+          <strong>Could not send online</strong>
+          <p id="form-error-text">Please use the button below to email me directly.</p>
+          <a id="form-mailto-fallback" class="btn btn-ghost form-fallback-btn" href="mailto:mazeemali150@gmail.com">Email mazeemali150@gmail.com</a>
         </div>
       </div>
 
@@ -531,17 +540,8 @@
           <h3 class="contact-heading">Contact Me</h3>
           <p class="contact-form-intro">Fill in your details and I'll receive your message at my inbox.</p>
 
-          <form
-            id="contact-form"
-            class="contact-form"
-            action="https://formsubmit.co/mazeemali150@gmail.com"
-            method="POST"
-          >
-            <input type="hidden" name="_subject" value="New message from portfolio — Azeem Ali" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" id="form-next-url" value="" />
-            <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <form id="contact-form" class="contact-form" novalidate>
+            <input type="text" name="botcheck" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
             <div class="form-group">
               <label for="client-name">Your Name</label>
@@ -585,7 +585,7 @@
               <span class="btn-submit-loading" hidden>Sending...</span>
             </button>
 
-            <p class="form-note">First submission may ask you to confirm via FormSubmit — one-time only.</p>
+            <p class="form-note">Messages are delivered to <strong>mazeemali150@gmail.com</strong>. Replies go to the email you enter above.</p>
           </form>
         </div>
       </div>
@@ -598,6 +598,7 @@
   </footer>
   </div>
 
+  <script src="contact-config.js"></script>
   <script src="script.js"></script>
   <script src="game.js"></script>
 </body>
