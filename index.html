@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="M. Azeem Ali — Game Developer portfolio. Unity, Godot, C#, GDScript." />
+  <title>M. Azeem Ali | Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-orb bg-orb--1"></div>
+    <div class="bg-orb bg-orb--2"></div>
+    <div class="bg-orb bg-orb--3"></div>
+    <div class="bg-mesh"></div>
+  </div>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Game start screen -->
+  <div id="start-screen" class="start-screen" role="dialog" aria-label="Press start">
+    <div class="start-screen-inner">
+      <p class="start-eyebrow">AZEEM OS v2.0</p>
+      <h2 class="start-title">PORTFOLIO QUEST</h2>
+      <p class="start-sub">A game dev adventure — scroll to explore</p>
+      <button type="button" id="start-btn" class="start-btn">
+        <span class="start-btn-icon">▶</span>
+        <span class="start-btn-text">PRESS START</span>
+      </button>
+      <p class="start-hint">Enter · Space · or Click</p>
+      <div class="start-loader" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Persistent game HUD -->
+  <aside class="game-hud" id="game-hud" aria-hidden="true">
+    <div class="hud-row">
+      <div class="hud-block hud-lvl">
+        <span class="hud-label">LV</span>
+        <span class="hud-value" id="hud-level">1</span>
+      </div>
+      <div class="hud-block hud-coins">
+        <span class="hud-coin-icon">◆</span>
+        <span class="hud-value" id="hud-coins">0</span>
+      </div>
+    </div>
+    <div class="hud-block hud-bar-block">
+      <span class="hud-label">HP</span>
+      <div class="hud-bar"><div class="hud-bar-fill hp-fill" id="hud-hp"></div></div>
+    </div>
+    <div class="hud-block hud-bar-block">
+      <span class="hud-label">XP</span>
+      <div class="hud-bar"><div class="hud-bar-fill xp-fill" id="hud-xp"></div></div>
+    </div>
+    <p class="hud-zone" id="hud-zone">ZONE: TITLE SCREEN</p>
+  </aside>
+
+  <div class="game-cursor" id="game-cursor" aria-hidden="true"></div>
+  <div id="float-layer" class="float-layer" aria-hidden="true"></div>
+  <div id="achievement-box" class="achievement-box" aria-live="polite"></div>
+  <div id="levelup-flash" class="levelup-flash" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="#hero" class="sidebar-logo">Azeem<span>.</span></a>
+    <button class="sidebar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="sidebar-nav">
+      <a href="#hero" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Portfolio</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="sidebar-social">
+      <a href="mailto:mazeemali150@gmail.com" title="Email" aria-label="Email">@</a>
+      <a href="tel:+923269698462" title="Phone" aria-label="Phone">☎</a>
+      <a href="#projects" title="Projects" aria-label="Projects">◆</a>
+      <a href="#contact" title="Contact" aria-label="Contact">✉</a>
+    </div>
+  </aside>
+
+  <div class="page-wrap">
+  <main>
+    <section id="hero" class="hero hero-split">
+      <div class="hero-content">
+        <div class="hero-hud">
+          <span class="hud-tag">SYS.STATUS</span>
+          <span class="hud-value online">ONLINE</span>
+          <span class="hud-divider">|</span>
+          <span class="hud-tag">ROLE</span>
+          <span class="hud-value">GAME_DEV</span>
+        </div>
+
+        <p class="hero-eyebrow">Hello, I'm</p>
+        <h1 class="hero-name" data-text="M. AZEEM ALI">M. AZEEM <span class="name-accent">ALI</span></h1>
+        <p class="hero-role">
+          <span class="typing" id="typing-text"></span>
+          <span class="cursor-blink">_</span>
+        </p>
+        <p class="hero-tagline">Game Developer based in Pakistan — Unity, Godot &amp; 3D worlds.</p>
+
+        <div class="hero-contact-strip">
+          <a href="tel:+923269698462">+92 326 9698462</a>
+          <span class="strip-dot">•</span>
+          <a href="mailto:mazeemali150@gmail.com">mazeemali150@gmail.com</a>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Hire Me</a>
+          <a href="#projects" class="btn btn-ghost">View Portfolio</a>
+        </div>
+      </div>
+
+      <div class="hero-portrait reveal">
+        <div class="portrait-glow portrait-glow--hero" aria-hidden="true"></div>
+        <div class="portrait-ring portrait-ring--gold">
+          <div class="portrait-frame">
+            <img
+              src="images/profile-hero.png"
+              alt="M. Azeem Ali — Game Developer"
+              class="portrait-img"
+              width="420"
+              height="420"
+              onerror="this.onerror=null;this.src='images/profile-hero.svg';"
+            />
+          </div>
+        </div>
+        <p class="portrait-caption">Game Dev · PK</p>
+      </div>
+    </section>
+
+    <section id="about" class="section about">
+      <!-- Self / Welcome section (Lilon-style) -->
+      <div class="self-section reveal">
+        <div class="self-portrait-wrap">
+          <div class="portrait-glow portrait-glow--about" aria-hidden="true"></div>
+          <div class="portrait-ring portrait-ring--magenta">
+            <div class="portrait-frame portrait-frame--sm">
+              <img
+                src="images/profile-about.png"
+                alt="M. Azeem Ali"
+                class="portrait-img"
+                width="280"
+                height="280"
+                onerror="this.onerror=null;this.src='images/profile-about.svg';"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="self-content">
+          <p class="self-eyebrow">Welcome to my portfolio</p>
+          <h2 class="self-title">I'm <span>M. Azeem Ali</span></h2>
+          <p class="self-bio">
+            Motivated and passionate game development student seeking for job
+            and grow my skills in game design, programming, and 3D environments.
+            Eager to contribute to real projects and learn from industry professionals.
+          </p>
+          <ul class="self-details">
+            <li>
+              <span class="detail-icon">✉</span>
+              <div>
+                <strong>Email</strong>
+                <a href="mailto:mazeemali150@gmail.com">mazeemali150@gmail.com</a>
+              </div>
+            </li>
+            <li>
+              <span class="detail-icon">☎</span>
+              <div>
+                <strong>Phone</strong>
+                <a href="tel:+923269698462">+92 326 9698462</a>
+              </div>
+            </li>
+            <li>
+              <span class="detail-icon">◎</span>
+              <div>
+                <strong>Location</strong>
+                <span>Pakistan</span>
+              </div>
+            </li>
+          </ul>
+          <div class="self-stats">
+            <div class="self-stat">
+              <span class="self-stat-num">2+</span>
+              <span class="self-stat-label">Years in Game Dev</span>
+            </div>
+            <div class="self-stat">
+              <span class="self-stat-num">3+</span>
+              <span class="self-stat-label">Engines &amp; Tools</span>
+            </div>
+            <div class="self-stat">
+              <span class="self-stat-num">BSCS</span>
+              <span class="self-stat-label">CS Student</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">More About Me</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="terminal-window reveal">
+        <div class="terminal-bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">about_me.txt</span>
+        </div>
+        <div class="terminal-body">
+          <p><span class="prompt">$</span> cat profile</p>
+          <p class="about-text">
+            Motivated and passionate game development student seeking for job
+            and grow my skills in game design, programming, and 3D environments.
+            Eager to contribute to real projects and learn from industry professionals.
+          </p>
+          <p><span class="prompt">$</span> echo $ROLE</p>
+          <p class="highlight-line">Game Developer</p>
+          <p><span class="prompt">$</span> ./dev_philosophy.sh</p>
+          <p class="about-text philosophy">
+            I treat every project like a level design problem: clear goals, tight feedback loops,
+            and polish where the player actually feels it. Code is my controller — design is the adventure.
+          </p>
+        </div>
+      </div>
+
+      <blockquote class="mission-banner reveal">
+        <span class="mission-icon">&#9889;</span>
+        <p>Every bug is a boss fight. Every shipped prototype is a win.</p>
+        <cite>— Dev log, Level 1</cite>
+      </blockquote>
+
+      <div class="player-hud reveal">
+        <h3 class="player-hud-title">PLAYER STATS</h3>
+        <div class="player-stats-grid">
+          <div class="player-stat">
+            <span class="player-stat-num" data-count="500">0</span><span class="player-stat-suffix">+</span>
+            <span class="player-stat-label">Hours in Engines</span>
+          </div>
+          <div class="player-stat">
+            <span class="player-stat-num" data-count="12">0</span>
+            <span class="player-stat-label">Mechanics Prototyped</span>
+          </div>
+          <div class="player-stat">
+            <span class="player-stat-num" data-count="3">0</span>
+            <span class="player-stat-label">Active Builds</span>
+          </div>
+          <div class="player-stat">
+            <span class="player-stat-num" data-count="100">0</span><span class="player-stat-suffix">%</span>
+            <span class="player-stat-label">Curiosity Buff</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section skills">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Skills</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="skills-grid reveal">
+        <article class="skill-chip" data-level="95">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Programming</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="90">
+          <span class="skill-icon">&#9670;</span>
+          <h3>C# / GDScript</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="88">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Unity / Godot</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="85">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Communication</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="82">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Time Management</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="80">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Multitasking</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="78">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Microsoft Office Suite</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip" data-level="95">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Active Listener</h3>
+          <div class="skill-bar"><span></span></div>
+        </article>
+        <article class="skill-chip lang">
+          <span class="skill-icon">&#9670;</span>
+          <h3>Languages</h3>
+          <p>Urdu · English</p>
+        </article>
+      </div>
+
+      <div class="tech-arsenal reveal">
+        <h3 class="arsenal-title">Tech Arsenal</h3>
+        <div class="arsenal-tags">
+          <span>Unity</span><span>Godot</span><span>C#</span><span>GDScript</span>
+          <span>Git</span><span>Blender</span><span>Physics 2D/3D</span><span>UI Systems</span>
+          <span>Level Design</span><span>Agile Mindset</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section projects">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Projects</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-intro reveal">Personal &amp; portfolio builds — crafted outside the day job, powered by curiosity.</p>
+
+      <div class="projects-grid reveal">
+        <article class="project-card">
+          <div class="project-thumb">
+            <img src="images/project-1.jpg" alt="Neon Drift Protocol" onerror="this.style.display='none';this.parentElement.classList.add('thumb-fallback','thumb-cyan');" />
+            <span class="project-icon">&#9670;</span>
+          </div>
+          <div class="project-body">
+            <span class="project-type">Arcade · Godot</span>
+            <h3>Neon Drift Protocol</h3>
+            <p>Top-down racer with boost pads, drift scoring, and synthwave UI. Built to master GDScript movement and camera follow logic.</p>
+            <ul class="project-tags">
+              <li>GDScript</li><li>Particle FX</li><li>Score System</li>
+            </ul>
+            <span class="project-status in-progress">In Development</span>
+          </div>
+        </article>
+
+        <article class="project-card featured-project">
+          <div class="project-thumb">
+            <img src="images/project-2.jpg" alt="Shadow Circuit" onerror="this.style.display='none';this.parentElement.classList.add('thumb-fallback','thumb-magenta');" />
+            <span class="project-icon">&#9670;</span>
+          </div>
+          <div class="project-body">
+            <span class="project-type">Puzzle · Unity</span>
+            <h3>Shadow Circuit</h3>
+            <p>Light-based puzzle platformer where switches reroute energy through the level. Focused on C# state machines and modular level blocks.</p>
+            <ul class="project-tags">
+              <li>C#</li><li>State Machine</li><li>2D Lighting</li>
+            </ul>
+            <span class="project-status playable">Playable Prototype</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-thumb">
+            <img src="images/project-3.jpg" alt="Void Station" onerror="this.style.display='none';this.parentElement.classList.add('thumb-fallback','thumb-purple');" />
+            <span class="project-icon">&#9670;</span>
+          </div>
+          <div class="project-body">
+            <span class="project-type">3D Study · Unity</span>
+            <h3>Void Station</h3>
+            <p>Sci-fi environment slice exploring modular corridors, emissive materials, and mood lighting for a future narrative game.</p>
+            <ul class="project-tags">
+              <li>3D Env</li><li>Lighting</li><li>Blender</li>
+            </ul>
+            <span class="project-status concept">Concept Build</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="lab" class="section lab">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Dev Lab</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="lab-grid reveal">
+        <article class="lab-card">
+          <h3>Currently Exploring</h3>
+          <ul>
+            <li>Shader Graph &amp; stylized materials</li>
+            <li>AI-assisted NPC behavior trees</li>
+            <li>Multiplayer basics with Netcode</li>
+            <li>Procedural level generation</li>
+          </ul>
+        </article>
+        <article class="lab-card quest-card">
+          <h3>2026 Quest Log</h3>
+          <ul class="quest-list">
+            <li><span class="quest-check done">&#10003;</span> Ship first public game jam entry</li>
+            <li><span class="quest-check active">&#9679;</span> Publish 3 portfolio demos on itch.io</li>
+            <li><span class="quest-check">&#9675;</span> Contribute to an open-source Godot tool</li>
+            <li><span class="quest-check">&#9675;</span> Land a junior game dev role</li>
+          </ul>
+        </article>
+        <article class="lab-card vibe-card">
+          <h3>When I'm Not Coding</h3>
+          <p>Breaking down game feel in indie hits, sketching level layouts, and hunting for the perfect SFX pack. Favorite genres: metroidvania, racers, and anything with a strong atmosphere.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="section experience">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Experience</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="timeline reveal">
+        <article class="timeline-card featured">
+          <div class="card-meta">
+            <time datetime="2024-03/2024-10">Mar 2024 — Oct 2024</time>
+            <span class="badge">Primary</span>
+          </div>
+          <h3>Game Developer</h3>
+          <p class="company">Dreamsquare.org</p>
+          <ul>
+            <li>Writing and optimizing code in C# / GDScript for player controls, game physics, and UI interactions.</li>
+            <li>Assisting in the design and development of gameplay mechanics and features using Unity/Godot.</li>
+          </ul>
+        </article>
+
+        <article class="timeline-card">
+          <div class="card-meta">
+            <time datetime="2025-07/2026-01">Jul 2025 — Jan 2026</time>
+          </div>
+          <h3>Sales Executive</h3>
+          <p class="company">Taurus</p>
+          <ul>
+            <li>Negotiation and closing complex deals.</li>
+            <li>Performed very well in that career.</li>
+          </ul>
+        </article>
+
+        <article class="timeline-card">
+          <div class="card-meta">
+            <time datetime="2024-11/2025-05">Nov 2024 — May 2025</time>
+          </div>
+          <h3>CSR (Customer Support Representative)</h3>
+          <p class="company">Mindbridge</p>
+          <ul>
+            <li>Develop customer relationship through effective communication and active listening.</li>
+            <li>Assisted in solving customer's inquiry and issues properly and professionally.</li>
+          </ul>
+        </article>
+
+        <article class="timeline-card">
+          <div class="card-meta">
+            <time>Present</time>
+          </div>
+          <h3>Digital Marketing — Temu Sales Promoter</h3>
+          <p class="company">Temu</p>
+          <ul>
+            <li>Doing listing of products on Temu.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="education" class="section education">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2 class="section-title">Education</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="edu-grid reveal">
+        <article class="edu-card">
+          <div class="edu-icon">&#9733;</div>
+          <h3>Bachelor of Science in Computer Science (BSCS)</h3>
+          <p class="edu-school">Virtual University</p>
+          <time datetime="2024">2024 — Present</time>
+        </article>
+        <article class="edu-card">
+          <div class="edu-icon">&#9733;</div>
+          <h3>ICS (Physics)</h3>
+          <p class="edu-school">Shalimar Graduate College</p>
+          <time datetime="2022/2024">2022 — 2024</time>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2 class="section-title">Contact</h2>
+        <div class="section-line"></div>
+      </div>
+      <div id="form-success" class="form-success" hidden>
+        <span class="form-success-icon">✓</span>
+        <div>
+          <strong>Message sent!</strong>
+          <p>Thanks for reaching out — I'll get back to you soon.</p>
+        </div>
+      </div>
+
+      <div class="contact-layout reveal">
+        <div class="contact-panel">
+          <h3 class="contact-heading">Reach Out</h3>
+          <p class="contact-cta">Ready to build worlds together? Send a message or use the details below.</p>
+          <a href="mailto:mazeemali150@gmail.com" class="contact-link">
+            <span class="contact-label">EMAIL</span>
+            <span class="contact-value">mazeemali150@gmail.com</span>
+          </a>
+          <a href="tel:+923269698462" class="contact-link">
+            <span class="contact-label">PHONE</span>
+            <span class="contact-value">+92 326 9698462</span>
+          </a>
+          <div class="contact-extra">
+            <span class="contact-label">OPEN TO</span>
+            <p>Junior Game Dev · Internships · Collaborations · Game Jams</p>
+          </div>
+        </div>
+
+        <div class="contact-form-wrap">
+          <h3 class="contact-heading">Contact Me</h3>
+          <p class="contact-form-intro">Fill in your details and I'll receive your message at my inbox.</p>
+
+          <form
+            id="contact-form"
+            class="contact-form"
+            action="https://formsubmit.co/mazeemali150@gmail.com"
+            method="POST"
+          >
+            <input type="hidden" name="_subject" value="New message from portfolio — Azeem Ali" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_next" id="form-next-url" value="" />
+            <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <div class="form-group">
+              <label for="client-name">Your Name</label>
+              <input
+                type="text"
+                id="client-name"
+                name="name"
+                placeholder="John Doe"
+                required
+                minlength="2"
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="client-email">Your Email</label>
+              <input
+                type="email"
+                id="client-email"
+                name="email"
+                placeholder="you@example.com"
+                required
+                autocomplete="email"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="client-objective">Objective to Contact</label>
+              <textarea
+                id="client-objective"
+                name="objective"
+                rows="5"
+                placeholder="e.g. Hiring for a Unity project, collaboration on a game jam..."
+                required
+                minlength="10"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-submit">
+              <span class="btn-submit-text">Send Message</span>
+              <span class="btn-submit-loading" hidden>Sending...</span>
+            </button>
+
+            <p class="form-note">First submission may ask you to confirm via FormSubmit — one-time only.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer page-footer">
+    <p>&copy; 2026 M. Azeem Ali · Crafted in code</p>
+    <p class="footer-tag">// scroll zones · earn XP · unlock achievements · Ctrl+click logo for cheat</p>
+  </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

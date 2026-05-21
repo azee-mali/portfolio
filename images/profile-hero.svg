@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Profile photo placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a2e"/>
+      <stop offset="100%" style="stop-color:#0a1628"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff00aa"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <circle cx="200" cy="170" r="72" fill="#2a2040" stroke="url(#glow)" stroke-width="3"/>
+  <text x="200" y="185" text-anchor="middle" fill="#e8ecf4" font-family="Arial,sans-serif" font-size="48" font-weight="bold">AA</text>
+  <text x="200" y="320" text-anchor="middle" fill="#8892a8" font-family="Arial,sans-serif" font-size="14">Add profile-hero.jpg</text>
+  <text x="200" y="340" text-anchor="middle" fill="#00f5ff" font-family="Arial,sans-serif" font-size="12">in /images folder</text>
+</svg>
